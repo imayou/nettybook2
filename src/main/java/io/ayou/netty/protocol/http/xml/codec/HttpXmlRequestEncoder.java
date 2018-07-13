@@ -22,8 +22,7 @@ public class HttpXmlRequestEncoder extends AbstractHttpXmlEncoder<HttpXmlRequest
 			HttpHeaders headers = request.headers();
 			headers.set(HttpHeaders.Names.HOST, InetAddress.getLocalHost().getHostAddress());
 			headers.set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
-			headers.set(HttpHeaders.Names.ACCEPT_ENCODING,
-					HttpHeaders.Values.GZIP.toString() + ',' + HttpHeaders.Values.DEFLATE.toString());
+			headers.set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP.toString() + ',' + HttpHeaders.Values.DEFLATE.toString());
 			headers.set(HttpHeaders.Names.ACCEPT_CHARSET, "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
 			headers.set(HttpHeaders.Names.ACCEPT_LANGUAGE, "zh");
 			headers.set(HttpHeaders.Names.USER_AGENT, "Netty xml Http Client side");

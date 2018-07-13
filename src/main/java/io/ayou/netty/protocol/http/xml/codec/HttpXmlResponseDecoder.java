@@ -40,5 +40,4 @@ public class HttpXmlResponseDecoder extends AbstractHttpXmlDecoder<DefaultFullHt
 		HttpXmlResponse resHttpXmlResponse = new HttpXmlResponse(msg, decode0(ctx, msg.content()));
 		out.add(resHttpXmlResponse);
 	}
-
 }

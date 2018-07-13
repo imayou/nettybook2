@@ -21,7 +21,6 @@ package io.ayou.netty.protocol.http.xml.pojo;
  * @version 1.0
  */
 public class OrderFactory {
-
 	public static Order create(long orderID) {
 		Order order = new Order();
 		order.setOrderNumber(orderID);

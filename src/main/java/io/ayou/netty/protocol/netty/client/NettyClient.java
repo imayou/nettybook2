@@ -48,23 +48,22 @@ public class NettyClient {
 
 	private ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	EventLoopGroup group = new NioEventLoopGroup();
+
 	public void connect(int port, String host) throws Exception {
 		try {// 配置客户端NIO线程组
 			Bootstrap b = new Bootstrap();
-			b.group(group).channel(NioSocketChannel.class).option(ChannelOption.TCP_NODELAY, true)
-					.handler(new ChannelInitializer<SocketChannel>() {
-						@Override
-						public void initChannel(SocketChannel ch) throws Exception {
-							ch.pipeline().addLast(new NettyMessageDecoder(1024 * 1024, 4, 4));
-							ch.pipeline().addLast("MessageEncoder", new NettyMessageEncoder());
-							ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(50));
-							ch.pipeline().addLast("LoginAuthHandler", new LoginAuthReqHandler());
-							ch.pipeline().addLast("HeartBeatHandler", new HeartBeatReqHandler());
-						}
-					});
+			b.group(group).channel(NioSocketChannel.class).option(ChannelOption.TCP_NODELAY, true).handler(new ChannelInitializer<SocketChannel>() {
+				@Override
+				public void initChannel(SocketChannel ch) throws Exception {
+					ch.pipeline().addLast(new NettyMessageDecoder(1024 * 1024, 4, 4));
+					ch.pipeline().addLast("MessageEncoder", new NettyMessageEncoder());
+					ch.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(50));
+					ch.pipeline().addLast("LoginAuthHandler", new LoginAuthReqHandler());
+					ch.pipeline().addLast("HeartBeatHandler", new HeartBeatReqHandler());
+				}
+			});
 			// 发起异步连接操作
-			ChannelFuture future = b.connect(new InetSocketAddress(host, port),
-					new InetSocketAddress(NettyConstant.LOCALIP, NettyConstant.LOCAL_PORT)).sync();
+			ChannelFuture future = b.connect(new InetSocketAddress(host, port), new InetSocketAddress(NettyConstant.LOCALIP, NettyConstant.LOCAL_PORT)).sync();
 			// 当对应的channel关闭的时候，就会返回对应的channel。
 			// Returns the ChannelFuture which will be notified when this channel is closed.
 			// This method always returns the same future instance.
@@ -88,6 +87,7 @@ public class NettyClient {
 			});
 		}
 	}
+
 	/**
 	 * @param args
 	 * @throws Exception

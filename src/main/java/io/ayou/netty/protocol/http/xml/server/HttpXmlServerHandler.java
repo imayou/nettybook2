@@ -51,7 +51,7 @@ public class HttpXmlServerHandler extends SimpleChannelInboundHandler<HttpXmlReq
 	public void messageReceived(final ChannelHandlerContext ctx, HttpXmlRequest xmlRequest) throws Exception {
 		HttpRequest request = xmlRequest.getRequest();
 		Order order = (Order) xmlRequest.getBody();
-		System.out.println("Http server receive request : " + order);
+		System.err.println("Http server receive request : " + order);
 		dobusiness(order);
 		ChannelFuture future = ctx.writeAndFlush(new HttpXmlResponse(null, order));
 		if (!isKeepAlive(request)) {
@@ -88,8 +88,7 @@ public class HttpXmlServerHandler extends SimpleChannelInboundHandler<HttpXmlReq
 	}
 
 	private static void sendError(ChannelHandlerContext ctx, HttpResponseStatus status) {
-		FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status,
-				Unpooled.copiedBuffer("失败: " + status.toString() + "\r\n", CharsetUtil.UTF_8));
+		FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status, Unpooled.copiedBuffer("失败: " + status.toString() + "\r\n", CharsetUtil.UTF_8));
 		response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
 		ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
 	}
